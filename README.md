@@ -1,2 +1,2 @@
-# bad-words
-Cleans the input of bad words
+# Bad Words 
+Filters through text and cleans the input of bad words found.

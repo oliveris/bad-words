@@ -1,0 +1,18 @@
+{
+  "name": "oliveris/bad-words",
+  "description": "Filters through text and cleans the input of bad words found.",
+  "keywords": ["bad words", "swear"],
+  "type": "package",
+  "license": "MIT",
+  "authors": [{
+    "name": "Sam Oliveri",
+    "email": "samoliveri92@gmail.com"
+  }],
+  "autoload": {
+    "psr-4": {
+      "BadWords\\" : "BadWords/"
+    }
+  },
+  "version": "v1.0.1",
+  "minimum-stability": "dev"
+}
