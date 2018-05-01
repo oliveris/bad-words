@@ -8,7 +8,7 @@ class BadWords
      * List of the bad words to filter against
      * @var array
      */
-    public $filter_list = [
+    public static $filter_list = [
         1 => "fuck",
         2 => "fucker",
         3 => "fucking",
@@ -35,7 +35,7 @@ class BadWords
      * List characters to remove from the string
      * @var array
      */
-    public $bad_characters = ['.','!','@','£','#','$','%','^','&','*','(',')','-','_','=','+','[','{','}',']',':',';','""',"'",'|',',','>','<','.','?'];
+    public static $bad_characters = ['.','!','@','£','#','$','%','^','&','*','(',')','-','_','=','+','[','{','}',']',':',';','""',"'",'|',',','>','<','.','?'];
 
     /**
      * Method checkString()
@@ -46,11 +46,11 @@ class BadWords
      * @param $string
      * @return bool
      */
-    public function checkForBadWords($string)
+    public static function checkForBadWords($string)
     {
         $found_badwords = [];
-        foreach ($this->cleanStringToArray($string) as $word) {
-            in_array($word, $this->filter_list) ? array_push($found_badwords, $word) : '';
+        foreach (self::cleanStringToArray($string) as $word) {
+            in_array($word, self::$filter_list) ? array_push($found_badwords, $word) : '';
         }
         return empty($found_badwords) ? false : true;
     }
@@ -64,11 +64,11 @@ class BadWords
      * @param $string
      * @return array
      */
-    public function getBadWords($string)
+    public static function getBadWords($string)
     {
         $found_badwords = [];
-        foreach ($this->cleanStringToArray($string) as $word) {
-            in_array($word, $this->filter_list) ? array_push($found_badwords, $word) : '';
+        foreach (self::cleanStringToArray($string) as $word) {
+            in_array($word, self::$filter_list) ? array_push($found_badwords, $word) : '';
         }
         return $found_badwords;
     }
@@ -82,9 +82,9 @@ class BadWords
      * @param $string
      * @return array
      */
-    private function cleanStringToArray($string)
+    private static function cleanStringToArray($string)
     {
-        $clean_string = str_replace($this->bad_characters, '', strtolower($string));
+        $clean_string = str_replace(self::$bad_characters, '', strtolower($string));
         return explode(' ', $clean_string);
     }
 }
