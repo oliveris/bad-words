@@ -18,3 +18,16 @@ echo 'Return an array of the bad words found in the string.';
 echo '<pre>';
 print_r(BadWords::getBadWords($test_string));
 echo '</pre>';
+
+echo '<br><hr><br>';
+
+// example that will replace any bad words in a string with random given words
+BadWords::setReplacementWords([
+    'hello',
+    'world',
+    'tree',
+    'desk',
+    'computer'
+]);
+
+echo BadWords::replaceBadWords($test_string);

@@ -30,6 +30,21 @@ BadWords::checkForBadWords($test_string)
 BadWords::getBadWords($test_string)
 ```
 
+### Replacing any bad words found within a string
+<p>Below is an example that returns a clean string, it replaces any bad words found within a string with random words that the user has set.</p>
+
+```
+BadWords::setReplacementWords([
+    'hello',
+    'world',
+    'tree',
+    'desk',
+    'computer'
+]);
+
+BadWords::replaceBadWords($test_string);
+```
+
 ### License
 
 BadWords is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

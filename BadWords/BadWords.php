@@ -32,6 +32,12 @@ class BadWords
     ];
 
     /**
+     * This empty array can be set using the setReplacementWords() method
+     * @var array
+     */
+    public static $replacement_words = [];
+
+    /**
      * List characters to remove from the string
      * @var array
      */
@@ -71,6 +77,40 @@ class BadWords
             in_array($word, self::$filter_list) ? array_push($found_badwords, $word) : '';
         }
         return $found_badwords;
+    }
+
+    /**
+     * Method setReplacementWords()
+     * ---------------------------------
+     *
+     * This method expects an array of words that will be used to replace any bad words that are found in an array
+     *
+     * @param array $replacement_words
+     */
+    public static function setReplacementWords(array $replacement_words)
+    {
+        self::$replacement_words = $replacement_words;
+    }
+
+    /**
+     * Method replaceBadWords()
+     * ---------------------------------
+     *
+     * Will replace any of the bad words found in a string with set replacement words
+     *
+     * @param $string
+     * @return mixed
+     */
+    public static function replaceBadWords($string)
+    {
+        $bad_words = self::getBadWords($string);
+
+        foreach ($bad_words as $word) {
+            $n = array_rand(self::$replacement_words);
+            $string = str_replace($word, self::$replacement_words[$n], $string);
+        }
+
+        return $string;
     }
 
     /**
