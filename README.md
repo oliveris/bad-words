@@ -45,6 +45,13 @@ BadWords::setReplacementWords([
 BadWords::replaceBadWords($test_string);
 ```
 
+### Replacing any bad words found within a string with a mask of characters
+<p>Below is an example that returns a clean string, it replaces any bad words found with a mask the same length as the bad words.</p>
+
+```
+BadWords::maskBadWords($test_string)
+```
+
 ### License
 
 BadWords is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
