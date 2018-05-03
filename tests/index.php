@@ -31,3 +31,8 @@ BadWords::setReplacementWords([
 ]);
 
 echo BadWords::replaceBadWords($test_string);
+
+echo '<br><hr><br>';
+
+// example that will replace any bad words found within a string with a random word mask
+echo BadWords::maskBadWords($test_string);

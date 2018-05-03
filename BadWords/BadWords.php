@@ -41,7 +41,7 @@ class BadWords
      * List characters to remove from the string
      * @var array
      */
-    public static $bad_characters = ['.','!','@','£','#','$','%','^','&','*','(',')','-','_','=','+','[','{','}',']',':',';','""',"'",'|',',','>','<','.','?'];
+    public static $characters = ['.','!','@','£','#','$','%','^','&','*','(',')','-','_','=','+','[','{','}',']',':',';','""',"'",'|',',','>','<','.','?'];
 
     /**
      * Method checkString()
@@ -114,6 +114,51 @@ class BadWords
     }
 
     /**
+     * Method maskBadWords()
+     * ---------------------------------
+     *
+     * This method will replace any bad words found within an array with a masked word of the same string length
+     *
+     * @param $string
+     * @return mixed
+     */
+    public static function maskBadWords($string)
+    {
+        $bad_words = self::getBadWords($string);
+
+        foreach ($bad_words as $word) {
+            $masked_word = self::makeWordMask($word);
+            $string = str_replace($word, $masked_word, $string);
+        }
+
+        return $string;
+    }
+
+    /**
+     * Method makeWordMask()
+     * ---------------------------------
+     *
+     * This method will replace the word passed with random characters from the array
+     *
+     * @param $word
+     * @return string
+     */
+    public static function makeWordMask($word)
+    {
+        $str_len = strlen($word);
+        $x = 1;
+        $mask = '';
+
+        while ($x <= $str_len) {
+            $n = array_rand(self::$characters);
+            $mask = $mask . self::$characters[$n];
+            $x++;
+        }
+
+        return $mask;
+    }
+
+    /**
      * cleanStringToArray()
      * ---------------------------------
      *
@@ -124,7 +169,7 @@ class BadWords
      */
     private static function cleanStringToArray($string)
     {
-        $clean_string = str_replace(self::$bad_characters, '', strtolower($string));
+        $clean_string = str_replace(self::$characters, '', strtolower($string));
         return explode(' ', $clean_string);
     }
 }
