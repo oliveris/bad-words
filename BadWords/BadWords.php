@@ -41,7 +41,34 @@ class BadWords
      * List characters to remove from the string
      * @var array
      */
-    public static $characters = ['.','!','@','£','#','$','%','^','&','*','(',')','-','_','=','+','[','{','}',']',':',';','""',"'",'|',',','>','<','.','?'];
+    public static $characters = [
+        'a' => '.',
+        'b' => '!',
+        'c' => '@',
+        'd' => '£',
+        'e' => '#',
+        'f' => '$',
+        'g' => '%',
+        'h' => '^',
+        'i' => '&',
+        'j' => '*',
+        'k' => '(',
+        'l' => ')',
+        'm' => '-',
+        'n' => '_',
+        'o' => '=',
+        'p' => '+',
+        'q' => '[',
+        'r' => '{',
+        's' => '}',
+        't' => ']',
+        'u' => ':',
+        'v' => ';',
+        'w' => '?',
+        'x' => '|',
+        'y' => '<',
+        'z' => '>'
+    ];
 
     /**
      * Method checkString()
@@ -156,6 +183,34 @@ class BadWords
         }
 
         return $mask;
+    }
+
+    public static function unMaskBadWords($string)
+    {
+        $words = explode(' ', $string);
+
+        $new_string = [];
+        foreach ($words as $word) {
+            $letters = str_split($word);
+
+            $new_string[] = !array_diff_key(array_flip($letters), self::$characters) ? self::unMaskWord($word) : $word;
+            print_r($new_string);
+            exit;
+        }
+
+        return implode($new_string);
+    }
+
+    public static function unMaskWord($word)
+    {
+        $letters = str_split($word);
+
+        $new_word = [];
+        foreach ($letters as $letter) {
+            $new_word[] = array_search($letter, self::$characters);
+        }
+
+        return $new_word;
     }
 
     /**

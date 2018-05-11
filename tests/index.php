@@ -36,3 +36,9 @@ echo '<br><hr><br>';
 
 // example that will replace any bad words found within a string with a random word mask
 echo BadWords::maskBadWords($test_string);
+
+echo '<br><hr><br>';
+
+// example that will replace any bad words found within a string with a random word mask and then easily get the original word back
+$masked_string = BadWords::maskBadWords($test_string);
+echo BadWords::unMaskBadWords($masked_string);
