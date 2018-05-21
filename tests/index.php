@@ -34,5 +34,36 @@ echo BadWords::replaceBadWords($test_string);
 
 echo '<br><hr><br>';
 
+// example that will replace all currently set filter words with a new list (array)
+BadWords::setFilterWords([
+    'cunt',
+    'moody',
+    'fat'
+]);
+echo '<pre>';
+print_r(BadWords::$filter_list);
+echo '</pre>';
+
+echo '<br><hr><br>';
+
+// example that will add to the currently set filter words with a new list (array)
+BadWords::addToFilterWords([
+    'bollocks',
+    'shit',
+    'fanny',
+    'slag'
+]);
+echo '<pre>';
+print_r(BadWords::$filter_list);
+echo '</pre>';
+
+echo '<br><hr><br>';
+
 // example that will replace any bad words found within a string with a random word mask
 echo BadWords::maskBadWords($test_string);
+
+echo '<br><hr><br>';
+
+// example that will replace any bad words found within a string with a random word mask and then easily get the original word back
+$masked_string = BadWords::maskBadWords($test_string);
+echo BadWords::unMaskBadWords($masked_string);

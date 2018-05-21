@@ -41,7 +41,34 @@ class BadWords
      * List characters to remove from the string
      * @var array
      */
-    public static $characters = ['.','!','@','£','#','$','%','^','&','*','(',')','-','_','=','+','[','{','}',']',':',';','""',"'",'|',',','>','<','.','?'];
+    public static $characters = [
+        'a' => '~',
+        'b' => '!',
+        'c' => '@',
+        'd' => '£',
+        'e' => '#',
+        'f' => '$',
+        'g' => '%',
+        'h' => '^',
+        'i' => '&',
+        'j' => '*',
+        'k' => '(',
+        'l' => ')',
+        'm' => '-',
+        'n' => '_',
+        'o' => '=',
+        'p' => '+',
+        'q' => '[',
+        'r' => '{',
+        's' => '}',
+        't' => ']',
+        'u' => ':',
+        'v' => ';',
+        'w' => '?',
+        'x' => '|',
+        'y' => '<',
+        'z' => '>'
+    ];
 
     /**
      * Method checkString()
@@ -93,6 +120,32 @@ class BadWords
     }
 
     /**
+     * setFilterWords()
+     * ---------------------------------
+     *
+     * Clears all preset filter words and replaces with a list the user has input
+     *
+     * @param array $filter_words
+     */
+    public static function setFilterWords(array $filter_words)
+    {
+        self::$filter_list = $filter_words;
+    }
+
+    /**
+     * addToFilterWords()
+     * ---------------------------------
+     *
+     * Adds more words to the filter (does not override existing filtering words)
+     *
+     * @param array $filter_words
+     */
+    public static function addToFilterWords(array $filter_words)
+    {
+        self::$filter_list = array_merge(self::$filter_list, $filter_words);
+    }
+
+    /**
      * Method replaceBadWords()
      * ---------------------------------
      *
@@ -138,24 +191,84 @@ class BadWords
      * Method makeWordMask()
      * ---------------------------------
      *
-     * This method will replace the word passed with random characters from the array
+     * This method will replace the word passed with characters from the array
      *
      * @param $word
      * @return string
      */
     public static function makeWordMask($word)
     {
-        $str_len = strlen($word);
-        $x = 1;
         $mask = '';
 
-        while ($x <= $str_len) {
-            $n = array_rand(self::$characters);
-            $mask = $mask . self::$characters[$n];
-            $x++;
+        $char_array = str_split($word);
+        foreach ($char_array as $char) {
+            $mask = $mask . self::$characters[$char];
         }
 
         return $mask;
+    }
+
+    /**
+     * unMaskBadWords()
+     * ---------------------------------
+     *
+     * Unmasks bad words to their original form and returns the string
+     *
+     * @param $string
+     * @return string
+     */
+    public static function unMaskBadWords($string)
+    {
+        $words = explode(' ', $string);
+
+        $new_string = [];
+        foreach ($words as $word) {
+            $new_string[] = self::doesWordNeedUnmask($word) ? self::unMaskWord($word) : $word;
+        }
+
+        return implode(' ', $new_string);
+    }
+
+    /**
+     * doesWordNeedUnmask()
+     * ---------------------------------
+     *
+     * This method works out if the word passed needs to unmasked
+     *
+     * @param $word
+     * @return bool
+     */
+    public static function doesWordNeedUnmask($word)
+    {
+        $letters = str_split($word);
+        $matched_chars = 0;
+
+        foreach ($letters as $letter) {
+            in_array($letter, self::$characters) ? $matched_chars++ : '';
+        }
+
+        return $matched_chars == strlen($word) ? true : false;
+    }
+
+    /**
+     * unMaskWord()
+     * ---------------------------------
+     *
+     * This method replaces masked characters back to their original form
+     *
+     * @param $word
+     * @return string
+     */
+    public static function unMaskWord($word)
+    {
+        $letters = str_split($word);
+
+        $new_word = [];
+        foreach ($letters as $letter) {
+            $new_word[] = array_search($letter, self::$characters);
+        }
+
+        return implode('', $new_word);
     }
 
     /**
