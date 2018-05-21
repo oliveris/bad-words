@@ -59,6 +59,26 @@ BadWords::maskBadWords($test_string)
 BadWords::unMaskBadWords($masked_string);
 ```
 
+### Set the filter words (will replace the preset)
+
+```
+BadWords::setFilterWords([
+    'moody',
+    'fat',
+    'cunt'
+]);
+```
+
+### Add to the array of filter words
+
+```
+BadWords::addToFilterWords([
+    'bollocks',
+    'shit',
+    'slag'
+]);
+```
+
 ### License
 
 BadWords is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

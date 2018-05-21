@@ -120,6 +120,32 @@ class BadWords
     }
 
     /**
+     * setFilterWords()
+     * ---------------------------------
+     *
+     * Clears all preset filter words and replaces with a list the user has input
+     *
+     * @param array $filter_words
+     */
+    public static function setFilterWords(array $filter_words)
+    {
+        self::$filter_list = $filter_words;
+    }
+
+    /**
+     * addToFilterWords()
+     * ---------------------------------
+     *
+     * Adds more words to the filter (does not override existing filtering words)
+     *
+     * @param array $filter_words
+     */
+    public static function addToFilterWords(array $filter_words)
+    {
+        self::$filter_list = array_merge(self::$filter_list, $filter_words);
+    }
+
+    /**
      * Method replaceBadWords()
      * ---------------------------------
      *
