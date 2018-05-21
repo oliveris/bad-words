@@ -42,7 +42,7 @@ class BadWords
      * @var array
      */
     public static $characters = [
-        'a' => '.',
+        'a' => '~',
         'b' => '!',
         'c' => '@',
         'd' => '£',
@@ -165,42 +165,74 @@ class BadWords
      * Method makeWordMask()
      * ---------------------------------
      *
-     * This method will replace the word passed with random characters from the array
+     * This method will replace the word passed with characters from the array
      *
      * @param $word
      * @return string
      */
     public static function makeWordMask($word)
     {
-        $str_len = strlen($word);
-        $x = 1;
         $mask = '';
 
-        while ($x <= $str_len) {
-            $n = array_rand(self::$characters);
-            $mask = $mask . self::$characters[$n];
-            $x++;
+        $char_array = str_split($word);
+        foreach ($char_array as $char) {
+            $mask = $mask . self::$characters[$char];
         }
 
         return $mask;
     }
 
+    /**
+     * unMaskBadWords()
+     * ---------------------------------
+     *
+     * Unmasks bad words to their original form and returns the string
+     *
+     * @param $string
+     * @return string
+     */
     public static function unMaskBadWords($string)
     {
         $words = explode(' ', $string);
 
         $new_string = [];
         foreach ($words as $word) {
-            $letters = str_split($word);
-
-            $new_string[] = !array_diff_key(array_flip($letters), self::$characters) ? self::unMaskWord($word) : $word;
-            print_r($new_string);
-            exit;
+            $new_string[] = self::doesWordNeedUnmask($word) ? self::unMaskWord($word) : $word;
         }
 
-        return implode($new_string);
+        return implode(' ', $new_string);
     }
 
+    /**
+     * doesWordNeedUnmask()
+     * ---------------------------------
+     *
+     * This method works out if the word passed needs to unmasked
+     *
+     * @param $word
+     * @return bool
+     */
+    public static function doesWordNeedUnmask($word)
+    {
+        $letters = str_split($word);
+        $matched_chars = 0;
+
+        foreach ($letters as $letter) {
+            in_array($letter, self::$characters) ? $matched_chars++ : '';
+        }
+
+        return $matched_chars == strlen($word) ? true : false;
+    }
+
+    /**
+     * unMaskWord()
+     * ---------------------------------
+     *
+     * This method replaces masked characters back to their original form
+     *
+     * @param $word
+     * @return string
+     */
     public static function unMaskWord($word)
     {
         $letters = str_split($word);
@@ -210,7 +242,7 @@ class BadWords
             $new_word[] = array_search($letter, self::$characters);
         }
 
-        return $new_word;
+        return implode('', $new_word);
     }
 
     /**
